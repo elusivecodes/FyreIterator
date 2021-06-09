@@ -52,5 +52,5 @@ Run the tests and return the results.
 - `$iterations` is the number of iterations to run, and will default to *1000*.
 
 ```php
-$results = Iterator::run();
+$results = Iterator::run($iterations);
 ```
