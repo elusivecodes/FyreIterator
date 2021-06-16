@@ -30,7 +30,7 @@ use Fyre\Iterator;
 
 Add a test
 
-- `$name` is the test name.
+- `$name` is a string representing the test name.
 - `$callback` is the callback to execute.
 
 ```php
@@ -49,7 +49,7 @@ Iterator::clear();
 
 Run the tests and return the results.
 
-- `$iterations` is the number of iterations to run, and will default to *1000*.
+- `$iterations` is a number representing the number of iterations to run, and will default to *1000*.
 
 ```php
 $results = Iterator::run($iterations);
