@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use
-    Fyre\Iterator,
+    Fyre\Utility\Iterator,
     PHPUnit\Framework\TestCase;
 
 final class IteratorTest extends TestCase

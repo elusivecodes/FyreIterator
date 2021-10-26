@@ -20,7 +20,7 @@ composer install fyre/iterator
 In PHP:
 
 ```php
-use Fyre\Iterator;
+use Fyre\Utility\Iterator;
 ```
 
 
