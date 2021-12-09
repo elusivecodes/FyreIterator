@@ -13,7 +13,7 @@ final class IteratorTest extends TestCase
     private int $i = 0;
     private int $j = 0;
 
-    public function testIteratorRun(): void
+    public function testRun(): void
     {
         Iterator::add('test', function() {
             $this->i++;
@@ -30,7 +30,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals(1000, $this->i);
     }
 
-    public function testIteratorRunMultipleTests(): void
+    public function testRunMultipleTests(): void
     {
         Iterator::add('test1', function() {
             $this->i++;
@@ -49,7 +49,7 @@ final class IteratorTest extends TestCase
         $this->assertEquals(1000, $this->j);
     }
 
-    public function testIteratorRunWithIterations(): void
+    public function testRunWithIterations(): void
     {
         Iterator::add('test', function() {
             $this->i++;
