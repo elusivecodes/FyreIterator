@@ -14,7 +14,7 @@
 **Using Composer**
 
 ```
-composer install fyre/iterator
+composer require fyre/iterator
 ```
 
 In PHP:
