@@ -27,7 +27,7 @@ final class IteratorTest extends TestCase
         $this->assertArrayHasKey('memory', $results['test']);
         $this->assertArrayHasKey('n', $results['test']);
 
-        $this->assertEquals(1000, $this->i);
+        $this->assertSame(1000, $this->i);
     }
 
     public function testRunMultipleTests(): void
@@ -45,8 +45,8 @@ final class IteratorTest extends TestCase
         $this->assertArrayHasKey('test1', $results);
         $this->assertArrayHasKey('test2', $results);
 
-        $this->assertEquals(1000, $this->i);
-        $this->assertEquals(1000, $this->j);
+        $this->assertSame(1000, $this->i);
+        $this->assertSame(1000, $this->j);
     }
 
     public function testRunWithIterations(): void
@@ -57,7 +57,7 @@ final class IteratorTest extends TestCase
 
         Iterator::run(500);
 
-        $this->assertEquals(500, $this->i);
+        $this->assertSame(500, $this->i);
     }
 
     protected function setUp(): void
