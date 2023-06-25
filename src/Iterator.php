@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Fyre\Utility;
 
-use function
-    call_user_func,
-    gc_collect_cycles,
-    max,
-    memory_get_usage,
-    microtime,
-    strtolower;
+use function array_key_exists;
+use function call_user_func;
+use function count;
+use function gc_collect_cycles;
+use function max;
+use function memory_get_usage;
+use function microtime;
 
 /**
  * Iterator
@@ -26,9 +26,16 @@ abstract class Iterator
      */
     public static function add(string $name, callable $callback): void
     {
-        $name = static::formatKey($name);
+        static::$tests[$name] = $callback;
+    }
 
-		static::$tests[$name] = $callback;
+    /**
+     * Get all tests.
+     * @return array The tests.
+     */
+    public static function all(): array
+    {
+        return static::$tests;
     }
 
     /**
@@ -37,6 +44,51 @@ abstract class Iterator
     public static function clear(): void
     {
         static::$tests = [];
+    }
+
+    /**
+     * Get the number of tests.
+     * @return int The number of tests.
+     */
+    public static function count(): int
+    {
+        return count(static::$tests);
+    }
+
+    /**
+     * Get a specific test callback.
+     * @param string $name The test name.
+     * @return callable|null The test callback.
+     */
+    public static function get(string $name): callable|null
+    {
+        return static::$tests[$name] ?? null;
+    }
+
+    /**
+     * Determine whether a test exists.
+     * @param string $name The test name.
+     * @return bool TRUE if the test exists, otherwise FALSE.
+     */
+    public static function has(string $name): bool
+    {
+        return array_key_exists($name, static::$tests);
+    }
+
+    /**
+     * Remove a test.
+     * @param string $name The test name.
+     * @return bool TRUE if the test was removed, otherwise FALSE.
+     */
+    public static function remove(string $name): bool
+    {
+        if (!array_key_exists($name, static::$tests)) {
+            return false;
+        }
+
+        unset(static::$tests[$name]);
+
+        return true;
     }
 
     /**
@@ -49,56 +101,28 @@ abstract class Iterator
         $results = [];
 
         foreach (static::$tests AS $name => $test) {
-			gc_collect_cycles();
+            gc_collect_cycles();
 
-            $start = static::now();
-            $startMemory = $maxMemory = static::memory();
+            $start = microtime(true);
+            $startMemory = memory_get_usage(true);
+            $maxMemory = 0;
 
             for ($i = 0; $i < $iterations; $i++) {
                 $result = call_user_func($test);
-                $currentMemory = static::memory();
-                $maxMemory = max($maxMemory, $currentMemory);
+                $maxMemory = max($maxMemory, memory_get_usage(true));
                 unset($result);
             }
 
-            $end = static::now();
+            $end = microtime(true);
 
             $results[$name] = [
                 'time' => $end - $start,
-                'memory' => $maxMemory - $startMemory,
+                'memory' => (float) max(0, $maxMemory - $startMemory),
                 'n' => $iterations
             ];
         }
 
         return $results;
-    }
-
-    /**
-     * Format a test key.
-     * @param string $name The test name.
-     * @return string The test key.
-     */
-    protected static function formatKey(string $name): string
-    {
-        return strtolower($name);
-    }
-
-    /**
-     * Get the current memory usage in bytes.
-     * @return float The current memory usage in bytes.
-     */
-    protected static function memory(): int
-    {
-        return memory_get_usage(true);
-    }
-
-    /**
-     * Get the current UTC timestamp with microseconds.
-     * @return float The current UTC timestamp with microseconds.
-     */
-    protected static function now(): float
-    {
-        return microtime(true);
     }
 
 }
