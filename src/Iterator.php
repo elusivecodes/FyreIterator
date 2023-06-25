@@ -117,7 +117,7 @@ abstract class Iterator
 
             $results[$name] = [
                 'time' => $end - $start,
-                'memory' => (float) max(0, $maxMemory - $startMemory),
+                'memory' => max(.0, $maxMemory - $startMemory),
                 'n' => $iterations
             ];
         }
