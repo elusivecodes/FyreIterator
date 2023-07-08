@@ -1,6 +1,6 @@
 # FyreIterator
 
-**FyreIterator** is a free, opens-source iteration library for *PHP*.
+**FyreIterator** is a free, open-source iteration library for *PHP*.
 
 
 ## Table Of Contents
