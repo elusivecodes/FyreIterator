@@ -7,9 +7,9 @@ use function array_key_exists;
 use function call_user_func;
 use function count;
 use function gc_collect_cycles;
+use function hrtime;
 use function max;
 use function memory_get_usage;
-use function microtime;
 
 /**
  * Iterator
@@ -56,6 +56,22 @@ abstract class Iterator
     }
 
     /**
+     * Delete a test.
+     * @param string $name The test name.
+     * @return bool TRUE if the test was deleted, otherwise FALSE.
+     */
+    public static function delete(string $name): bool
+    {
+        if (!array_key_exists($name, static::$tests)) {
+            return false;
+        }
+
+        unset(static::$tests[$name]);
+
+        return true;
+    }
+
+    /**
      * Get a specific test callback.
      * @param string $name The test name.
      * @return callable|null The test callback.
@@ -76,22 +92,6 @@ abstract class Iterator
     }
 
     /**
-     * Remove a test.
-     * @param string $name The test name.
-     * @return bool TRUE if the test was removed, otherwise FALSE.
-     */
-    public static function remove(string $name): bool
-    {
-        if (!array_key_exists($name, static::$tests)) {
-            return false;
-        }
-
-        unset(static::$tests[$name]);
-
-        return true;
-    }
-
-    /**
      * Run the tests and return the results.
      * @param int $iterations The number of iterations to run.
      * @return array The test results.
@@ -103,7 +103,7 @@ abstract class Iterator
         foreach (static::$tests AS $name => $test) {
             gc_collect_cycles();
 
-            $start = microtime(true);
+            $start = hrtime(true);
             $startMemory = memory_get_usage(true);
             $maxMemory = 0;
 
@@ -113,10 +113,10 @@ abstract class Iterator
                 unset($result);
             }
 
-            $end = microtime(true);
+            $end = hrtime(true);
 
             $results[$name] = [
-                'time' => $end - $start,
+                'time' => ($end - $start) / 1000,
                 'memory' => max(.0, $maxMemory - $startMemory),
                 'n' => $iterations
             ];

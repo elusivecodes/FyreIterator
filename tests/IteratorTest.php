@@ -45,6 +45,24 @@ final class IteratorTest extends TestCase
         $this->assertSame(2, Iterator::count());
     }
 
+    public function testDelete(): void
+    {
+        Iterator::add('test1', function() { });
+        Iterator::add('test2', function() { });
+
+        $this->assertTrue(Iterator::delete('test1'));
+        $this->assertFalse(Iterator::has('test1'));
+        $this->assertSame(1, Iterator::count());
+    }
+
+    public function testDeleteInvalid(): void
+    {
+        Iterator::add('test1', function() { });
+
+        $this->assertFalse(Iterator::delete('test2'));
+        $this->assertSame(1, Iterator::count());
+    }
+
     public function testHasTrue(): void
     {
         Iterator::add('test1', function() { });
@@ -71,24 +89,6 @@ final class IteratorTest extends TestCase
     public function testGetInvalid(): void
     {
         $this->assertNull(Iterator::get('test'));
-    }
-
-    public function testRemove(): void
-    {
-        Iterator::add('test1', function() { });
-        Iterator::add('test2', function() { });
-
-        $this->assertTrue(Iterator::remove('test1'));
-        $this->assertFalse(Iterator::has('test1'));
-        $this->assertSame(1, Iterator::count());
-    }
-
-    public function testRemoveInvalid(): void
-    {
-        Iterator::add('test1', function() { });
-
-        $this->assertFalse(Iterator::remove('test2'));
-        $this->assertSame(1, Iterator::count());
     }
 
     public function testRun(): void
