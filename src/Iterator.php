@@ -56,22 +56,6 @@ abstract class Iterator
     }
 
     /**
-     * Delete a test.
-     * @param string $name The test name.
-     * @return bool TRUE if the test was deleted, otherwise FALSE.
-     */
-    public static function delete(string $name): bool
-    {
-        if (!array_key_exists($name, static::$tests)) {
-            return false;
-        }
-
-        unset(static::$tests[$name]);
-
-        return true;
-    }
-
-    /**
      * Get a specific test callback.
      * @param string $name The test name.
      * @return callable|null The test callback.
@@ -89,6 +73,22 @@ abstract class Iterator
     public static function has(string $name): bool
     {
         return array_key_exists($name, static::$tests);
+    }
+
+    /**
+     * Remove a test.
+     * @param string $name The test name.
+     * @return bool TRUE if the test was removed, otherwise FALSE.
+     */
+    public static function remove(string $name): bool
+    {
+        if (!array_key_exists($name, static::$tests)) {
+            return false;
+        }
+
+        unset(static::$tests[$name]);
+
+        return true;
     }
 
     /**
