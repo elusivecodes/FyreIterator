@@ -16,7 +16,6 @@ use function memory_get_usage;
  */
 abstract class Iterator
 {
-
     protected static array $tests = [];
 
     /**
@@ -100,7 +99,7 @@ abstract class Iterator
     {
         $results = [];
 
-        foreach (static::$tests AS $name => $test) {
+        foreach (static::$tests as $name => $test) {
             gc_collect_cycles();
 
             $start = hrtime(true);
@@ -124,5 +123,4 @@ abstract class Iterator
 
         return $results;
     }
-
 }
