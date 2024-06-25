@@ -9,26 +9,20 @@ use PHPUnit\Framework\TestCase;
 final class IteratorTest extends TestCase
 {
     private int $i = 0;
-    private int $j = 0;
 
-    protected function setUp(): void
-    {
-        Iterator::clear();
-        $this->i = 0;
-        $this->j = 0;
-    }
+    private int $j = 0;
 
     public function testAdd(): void
     {
         $this->expectNotToPerformAssertions();
 
-        Iterator::add('test1', function() { });
+        Iterator::add('test1', function() {});
     }
 
     public function testAll(): void
     {
-        $test1 = function() { };
-        $test2 = function() { };
+        $test1 = function() {};
+        $test2 = function() {};
 
         Iterator::add('test1', $test1);
         Iterator::add('test2', $test2);
@@ -45,15 +39,15 @@ final class IteratorTest extends TestCase
 
     public function testCount(): void
     {
-        Iterator::add('test1', function() { });
-        Iterator::add('test2', function() { });
+        Iterator::add('test1', function() {});
+        Iterator::add('test2', function() {});
 
         $this->assertSame(2, Iterator::count());
     }
 
     public function testGet(): void
     {
-        $test = function() { };
+        $test = function() {};
 
         Iterator::add('test', $test);
 
@@ -67,22 +61,22 @@ final class IteratorTest extends TestCase
 
     public function testHasFalse(): void
     {
-        Iterator::add('test1', function() { });
+        Iterator::add('test1', function() {});
 
         $this->assertFalse(Iterator::has('test2'));
     }
 
     public function testHasTrue(): void
     {
-        Iterator::add('test1', function() { });
+        Iterator::add('test1', function() {});
 
         $this->assertTrue(Iterator::has('test1'));
     }
 
     public function testRemove(): void
     {
-        Iterator::add('test1', function() { });
-        Iterator::add('test2', function() { });
+        Iterator::add('test1', function() {});
+        Iterator::add('test2', function() {});
 
         $this->assertTrue(Iterator::remove('test1'));
         $this->assertFalse(Iterator::has('test1'));
@@ -91,7 +85,7 @@ final class IteratorTest extends TestCase
 
     public function testRemoveInvalid(): void
     {
-        Iterator::add('test1', function() { });
+        Iterator::add('test1', function() {});
 
         $this->assertFalse(Iterator::remove('test2'));
         $this->assertSame(1, Iterator::count());
@@ -157,5 +151,12 @@ final class IteratorTest extends TestCase
         Iterator::run(500);
 
         $this->assertSame(500, $this->i);
+    }
+
+    protected function setUp(): void
+    {
+        Iterator::clear();
+        $this->i = 0;
+        $this->j = 0;
     }
 }

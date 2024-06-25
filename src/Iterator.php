@@ -20,6 +20,7 @@ abstract class Iterator
 
     /**
      * Add a test.
+     *
      * @param string $name The test name.
      * @param callable $callback The callback.
      */
@@ -30,6 +31,7 @@ abstract class Iterator
 
     /**
      * Get all tests.
+     *
      * @return array The tests.
      */
     public static function all(): array
@@ -47,6 +49,7 @@ abstract class Iterator
 
     /**
      * Get the number of tests.
+     *
      * @return int The number of tests.
      */
     public static function count(): int
@@ -56,6 +59,7 @@ abstract class Iterator
 
     /**
      * Get a specific test callback.
+     *
      * @param string $name The test name.
      * @return callable|null The test callback.
      */
@@ -66,6 +70,7 @@ abstract class Iterator
 
     /**
      * Determine whether a test exists.
+     *
      * @param string $name The test name.
      * @return bool TRUE if the test exists, otherwise FALSE.
      */
@@ -76,6 +81,7 @@ abstract class Iterator
 
     /**
      * Remove a test.
+     *
      * @param string $name The test name.
      * @return bool TRUE if the test was removed, otherwise FALSE.
      */
@@ -92,6 +98,7 @@ abstract class Iterator
 
     /**
      * Run the tests and return the results.
+     *
      * @param int $iterations The number of iterations to run.
      * @return array The test results.
      */
@@ -117,7 +124,7 @@ abstract class Iterator
             $results[$name] = [
                 'time' => ($end - $start) / 1000,
                 'memory' => max(.0, $maxMemory - $startMemory),
-                'n' => $iterations
+                'n' => $iterations,
             ];
         }
 
