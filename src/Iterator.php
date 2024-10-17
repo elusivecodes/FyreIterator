@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Fyre\Utility;
 
 use function array_key_exists;
-use function call_user_func;
 use function count;
 use function gc_collect_cycles;
 use function hrtime;
@@ -114,7 +113,7 @@ abstract class Iterator
             $maxMemory = 0;
 
             for ($i = 0; $i < $iterations; $i++) {
-                $result = call_user_func($test);
+                $result = $test();
                 $maxMemory = max($maxMemory, memory_get_usage(true));
                 unset($result);
             }
