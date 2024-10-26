@@ -5,7 +5,8 @@
 
 ## Table Of Contents
 - [Installation](#installation)
-- [Methods](#methods)
+- [Iterator Creation](#iterator-creation)
+- [Iterator Methods](#iterator-methods)
 
 
 
@@ -24,7 +25,14 @@ use Fyre\Utility\Iterator;
 ```
 
 
-## Methods
+## Iterator Creation
+
+```php
+$iterator = new Iterator();
+```
+
+
+## Iterator Methods
 
 **Add**
 
@@ -34,7 +42,7 @@ Add a test
 - `$callback` is the callback to execute.
 
 ```php
-Iterator::add($name, $callback);
+$iterator->add($name, $callback);
 ```
 
 **All**
@@ -42,7 +50,7 @@ Iterator::add($name, $callback);
 Get all tests.
 
 ```php
-$tests = Iterator::all();
+$tests = $iterator->all();
 ```
 
 **Clear**
@@ -50,7 +58,7 @@ $tests = Iterator::all();
 Clear all tests.
 
 ```php
-Iterator::clear();
+$iterator->clear();
 ```
 
 **Count**
@@ -58,7 +66,7 @@ Iterator::clear();
 Get the number of tests.
 
 ```php
-$testCount = Iterator::count();
+$count = $iterator->count();
 ```
 
 **Get**
@@ -68,7 +76,7 @@ Get a specific test callback.
 - `$name` is a string representing the test name.
 
 ```php
-$test = Iterator::get($name);
+$test = $iterator->get($name);
 ```
 
 **Has**
@@ -78,7 +86,7 @@ Determine whether a test exists.
 - `$name` is a string representing the test name.
 
 ```php
-$hasTest = Iterator::has($name);
+$hasTest = $iterator->has($name);
 ```
 
 **Remove**
@@ -88,7 +96,7 @@ Remove a test.
 - `$name` is a string representing the test name.
 
 ```php
-$removed = Iterator::remove($name);
+$iterator->remove($name);
 ```
 
 **Run**
@@ -98,5 +106,5 @@ Run the tests and return the results.
 - `$iterations` is a number representing the number of iterations to run, and will default to *1000*.
 
 ```php
-$results = Iterator::run($iterations);
+$results = $iterator->run($iterations);
 ```

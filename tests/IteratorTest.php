@@ -5,29 +5,29 @@ namespace Tests;
 
 use Fyre\Utility\Iterator;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 final class IteratorTest extends TestCase
 {
-    private int $i = 0;
-
-    private int $j = 0;
+    protected Iterator $iterator;
 
     public function testAdd(): void
     {
-        $this->expectNotToPerformAssertions();
-
-        Iterator::add('test1', function() {});
+        $this->assertSame(
+            $this->iterator,
+            $this->iterator->add('test1', function(): void {})
+        );
     }
 
     public function testAll(): void
     {
-        $test1 = function() {};
-        $test2 = function() {};
+        $test1 = function(): void {};
+        $test2 = function(): void {};
 
-        Iterator::add('test1', $test1);
-        Iterator::add('test2', $test2);
+        $this->iterator->add('test1', $test1);
+        $this->iterator->add('test2', $test2);
 
-        $tests = Iterator::all();
+        $tests = $this->iterator->all();
 
         $this->assertIsArray($tests);
         $this->assertCount(2, $tests);
@@ -39,68 +39,72 @@ final class IteratorTest extends TestCase
 
     public function testCount(): void
     {
-        Iterator::add('test1', function() {});
-        Iterator::add('test2', function() {});
+        $this->iterator->add('test1', function(): void {});
+        $this->iterator->add('test2', function(): void {});
 
-        $this->assertSame(2, Iterator::count());
+        $this->assertSame(2, $this->iterator->count());
     }
 
     public function testGet(): void
     {
-        $test = function() {};
+        $test = function(): void {};
 
-        Iterator::add('test', $test);
+        $this->iterator->add('test', $test);
 
-        $this->assertSame($test, Iterator::get('test'));
+        $this->assertSame($test, $this->iterator->get('test'));
     }
 
     public function testGetInvalid(): void
     {
-        $this->assertNull(Iterator::get('test'));
+        $this->assertNull($this->iterator->get('test'));
     }
 
     public function testHasFalse(): void
     {
-        Iterator::add('test1', function() {});
+        $this->iterator->add('test', function(): void {});
 
-        $this->assertFalse(Iterator::has('test2'));
+        $this->assertFalse($this->iterator->has('invalid'));
     }
 
     public function testHasTrue(): void
     {
-        Iterator::add('test1', function() {});
+        $this->iterator->add('test', function(): void {});
 
-        $this->assertTrue(Iterator::has('test1'));
+        $this->assertTrue($this->iterator->has('test'));
     }
 
     public function testRemove(): void
     {
-        Iterator::add('test1', function() {});
-        Iterator::add('test2', function() {});
+        $this->iterator->add('test1', function(): void {});
+        $this->iterator->add('test2', function(): void {});
 
-        $this->assertTrue(Iterator::remove('test1'));
-        $this->assertFalse(Iterator::has('test1'));
-        $this->assertSame(1, Iterator::count());
+        $this->assertSame(
+            $this->iterator,
+            $this->iterator->remove('test1')
+        );
+
+        $this->assertFalse($this->iterator->has('test1'));
+        $this->assertTrue($this->iterator->has('test2'));
     }
 
     public function testRemoveInvalid(): void
     {
-        Iterator::add('test1', function() {});
+        $this->expectException(RuntimeException::class);
 
-        $this->assertFalse(Iterator::remove('test2'));
-        $this->assertSame(1, Iterator::count());
+        $this->iterator->remove('invalid');
     }
 
     public function testRun(): void
     {
-        Iterator::add('test', function() {
-            $this->i++;
+        $i = 0;
+        $this->iterator->add('test', function() use (&$i): void {
+            $i++;
         });
 
-        $results = Iterator::run();
+        $results = $this->iterator->run();
 
-        $this->assertIsArray($results);
-        $this->assertCount(1, $results);
+        $this->assertSame(1000, $i);
+
         $this->assertArrayHasKey('test', $results);
         $this->assertArrayHasKey('time', $results['test']);
         $this->assertArrayHasKey('memory', $results['test']);
@@ -108,22 +112,24 @@ final class IteratorTest extends TestCase
         $this->assertIsFloat($results['test']['time']);
         $this->assertIsFloat($results['test']['memory']);
         $this->assertSame(1000, $results['test']['n']);
-        $this->assertSame(1000, $this->i);
     }
 
     public function testRunMultipleTests(): void
     {
-        Iterator::add('test1', function() {
-            $this->i++;
+        $i = 0;
+        $j = 0;
+        $this->iterator->add('test1', function() use (&$i): void {
+            $i++;
         });
-        Iterator::add('test2', function() {
-            $this->j++;
+        $this->iterator->add('test2', function() use (&$j): void {
+            $j++;
         });
 
-        $results = Iterator::run();
+        $results = $this->iterator->run();
 
-        $this->assertIsArray($results);
-        $this->assertCount(2, $results);
+        $this->assertSame(1000, $i);
+        $this->assertSame(1000, $j);
+
         $this->assertArrayHasKey('test1', $results);
         $this->assertArrayHasKey('test2', $results);
         $this->assertArrayHasKey('time', $results['test1']);
@@ -138,25 +144,22 @@ final class IteratorTest extends TestCase
         $this->assertIsFloat($results['test2']['time']);
         $this->assertIsFloat($results['test2']['memory']);
         $this->assertSame(1000, $results['test2']['n']);
-        $this->assertSame(1000, $this->i);
-        $this->assertSame(1000, $this->j);
     }
 
     public function testRunWithIterations(): void
     {
-        Iterator::add('test', function() {
-            $this->i++;
+        $i = 0;
+        $this->iterator->add('test', function() use (&$i): void {
+            $i++;
         });
 
-        Iterator::run(500);
+        $this->iterator->run(500);
 
-        $this->assertSame(500, $this->i);
+        $this->assertSame(500, $i);
     }
 
     protected function setUp(): void
     {
-        Iterator::clear();
-        $this->i = 0;
-        $this->j = 0;
+        $this->iterator = new Iterator();
     }
 }
