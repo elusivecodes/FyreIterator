@@ -5,8 +5,8 @@
 
 ## Table Of Contents
 - [Installation](#installation)
-- [Iterator Creation](#iterator-creation)
-- [Iterator Methods](#iterator-methods)
+- [Basic Usage](#basic-usage)
+- [Methods](#methods)
 
 
 
@@ -25,14 +25,14 @@ use Fyre\Utility\Iterator;
 ```
 
 
-## Iterator Creation
+## Basic Usage
 
 ```php
 $iterator = new Iterator();
 ```
 
 
-## Iterator Methods
+## Methods
 
 **Add**
 
