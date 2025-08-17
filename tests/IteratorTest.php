@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace Tests;
 
 use Fyre\Utility\Iterator;
+use Fyre\Utility\Traits\MacroTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+
+use function class_uses;
 
 final class IteratorTest extends TestCase
 {
@@ -71,6 +74,14 @@ final class IteratorTest extends TestCase
         $this->iterator->add('test', function(): void {});
 
         $this->assertTrue($this->iterator->has('test'));
+    }
+
+    public function testMacroable(): void
+    {
+        $this->assertContains(
+            MacroTrait::class,
+            class_uses(Iterator::class)
+        );
     }
 
     public function testRemove(): void

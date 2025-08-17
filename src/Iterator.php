@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Fyre\Utility;
 
+use Fyre\Utility\Traits\MacroTrait;
 use RuntimeException;
 
 use function array_key_exists;
@@ -17,6 +18,8 @@ use function memory_get_usage;
  */
 class Iterator
 {
+    use MacroTrait;
+
     protected array $tests = [];
 
     /**
